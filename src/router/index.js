@@ -3,12 +3,22 @@ import VueRouter from 'vue-router'
 //* Login登录组件
 import Login from '@/views/Login.vue'
 import Home from '@/views/Home.vue'
+import Welcome from '@/views/Welcome.vue'
+import Users from '@/views/user/Users.vue'
 Vue.use(VueRouter)
 //* 路由规则
 const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', component: Login },
-  { path: '/home', component: Home }
+  {
+    path: '/home',
+    component: Home,
+    redirect: '/home/welcome',
+    children: [
+      { path: 'welcome', component: Welcome },
+      { path: '/users', component: Users }
+    ]
+  }
 ]
 
 const router = new VueRouter({

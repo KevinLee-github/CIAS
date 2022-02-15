@@ -6,3 +6,20 @@ body,
   margin: 0;
   padding: 0;
 }
+/* 设置面包屑导航与卡片之间的距离 设置面包屑字体大小 */
+.el-breadcrumb{
+  margin-bottom: 15px;
+  font-size: 12px;
+}
+/* 设置卡片的阴影区域 */
+.el-card{
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
+}
+.el-table{
+  margin-top: 20px;
+  color: black;
+}
+/* 设置分页条和表格之间的距离 */
+.el-pagination{
+  margin-top: 15px;
+}

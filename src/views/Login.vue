@@ -1,4 +1,13 @@
 <template>
+<!--
+   //! Login模块的基本的业务逻辑：
+    //-1、对应组件的创建
+    //- 2、数据的绑定
+    //- 3、使用element-ui中的表单校验对输入的用户名和密码进行登录之前的校验
+    //- 4、通过ref获取到指定的节点的实例对象，利用element-ui提供的方法进行点击登录按钮发送axios之前，进行表单验证是否
+           //- 4.1 合法，合法再进行axios请求的发送
+    //- 5、登陆成功之后，将获取的token数据保存到window的sessionStorage中，为了让用户登录过系统之后，下次再次进入系统免登录
+ -->
   <div class="login-container">
     <div class="login-box">
       <!-- 图片的box域 -->
@@ -22,6 +31,7 @@
       </el-form>
     </div>
   </div>
+
 </template>
 
 <script>
