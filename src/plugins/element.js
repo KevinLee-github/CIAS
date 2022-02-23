@@ -48,7 +48,33 @@ import {
   // - 对话框
   Dialog,
   // -  消息提示框
-  MessageBox
+  MessageBox,
+  // - 标签
+  Tag,
+  // - 树形控件
+  Tree,
+  // -下拉菜单控件
+  Select,
+  // - 下拉菜单控件的item项
+  Option,
+  Cascader,
+  CascaderPanel,
+  Alert,
+  // - tabs标签
+  Tabs,
+  // - tabs标签的面板
+  TabPane,
+  // - 步骤条
+  Steps,
+  Step,
+  // - 复选框
+  Checkbox,
+  CheckboxGroup,
+  // - 上传
+  Upload,
+  // - 时间轴
+  Timeline,
+  TimelineItem
 
 } from 'element-ui'
 // -将对应组件安装为插件，以便使用
@@ -75,6 +101,22 @@ Vue.use(Switch)
 Vue.use(Tooltip)
 Vue.use(Pagination)
 Vue.use(Dialog)
+Vue.use(Tag)
+Vue.use(Tree)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(Cascader)
+Vue.use(CascaderPanel)
+Vue.use(Alert)
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Steps)
+Vue.use(Step)
+Vue.use(Checkbox)
+Vue.use(CheckboxGroup)
+Vue.use(Upload)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 //! 将message组件挂载到vue的原型对象上
 Vue.prototype.$message = Message
 //! 将messageBox的confirm对象挂载到Vue原型上

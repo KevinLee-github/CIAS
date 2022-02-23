@@ -5,6 +5,14 @@ import Login from '@/views/Login.vue'
 import Home from '@/views/Home.vue'
 import Welcome from '@/views/Welcome.vue'
 import Users from '@/views/user/Users.vue'
+import Rights from '@/views/rights/Rights.vue'
+import Roles from '@/views/rights/Roles'
+import Cate from '@/views/goods/Cate.vue'
+import Params from '@/views/goods/Params'
+import Goods from '@/views/goods/GoodsList.vue'
+import Orders from '@/views/order/Orders'
+import Reports from '@/views/data/Reports'
+import AddGoods from '@/views/goods/AddGoods'
 Vue.use(VueRouter)
 //* 路由规则
 const routes = [
@@ -16,7 +24,15 @@ const routes = [
     redirect: '/home/welcome',
     children: [
       { path: 'welcome', component: Welcome },
-      { path: '/users', component: Users }
+      { path: '/rights', component: Rights },
+      { path: '/users', component: Users },
+      { path: '/roles', component: Roles },
+      { path: '/categories', component: Cate },
+      { path: '/params', component: Params },
+      { path: '/goods', component: Goods },
+      { path: '/orders', component: Orders },
+      { path: '/reports', component: Reports },
+      { path: '/goods/addgoods', component: AddGoods }
     ]
   }
 ]

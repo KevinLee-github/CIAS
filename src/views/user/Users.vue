@@ -20,11 +20,11 @@
   </el-col>
 </el-row>
 <!-- 用户表格 -->
+<!-- style="width: 100%" -->
  <el-table
        :stripe="true"
        :border="true"
-      :data="userList"
-      style="width: 100%">
+      :data="userList">
       <el-table-column
         type="index"
         label="#"
@@ -76,7 +76,7 @@
              </el-tooltip>
              <!-- tooltip文字提示 -->
              <el-tooltip  effect="dark" content="分配角色" placement="top" :enterable="false">
-               <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
+               <el-button type="warning" icon="el-icon-setting" size="mini" @click="setRoleForUser(scope.row)"></el-button>
              </el-tooltip>
         </template>
       </el-table-column>
@@ -157,6 +157,37 @@
   <span slot="footer" class="dialog-footer">
     <el-button @click="controlEditDialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="editUserInfo">确 定</el-button>
+  </span>
+</el-dialog>
+<!-- 分配角色的对话框 -->
+<el-dialog
+  title="分配角色"
+  :visible.sync="setRoledialogVisible"
+  width="40%"
+  @close="setroleDialogClosed"
+  >
+  <div>
+    <p>当前的用户：{{this.currentUserInfo.username}}</p>
+    <p>当前的角色：{{this.currentUserInfo.role_name}}</p>
+    <!--  -->
+    <p>分配新角色：
+      <!--
+        下拉菜单中对应的参数的含义：
+        value：保存当前选中的菜单项，对应的真实值，将该值双向绑定到selectRoleId中
+      -->
+  <el-select v-model="selectRoleId" placeholder="请选择">
+    <el-option
+      v-for="item in roleList"
+      :key="item.id"
+      :label="item.roleName"
+      :value="item.id">
+    </el-option>
+  </el-select>
+    </p>
+  </div>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="setRoledialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="setRoleFun">确 定</el-button>
   </span>
 </el-dialog>
 </div>
@@ -250,7 +281,15 @@ export default {
       //! 控制修改用户信息对话框的显示与隐藏
       controlEditDialogVisible: false,
       //! 修改用户信息对话框中对应的数据模型
-      editUserFormModel: {}
+      editUserFormModel: {},
+      //! 控制分配角色对话框的显示与隐藏
+      setRoledialogVisible: false,
+      //! 保存当前行的用户的所有数据
+      currentUserInfo: {},
+      //! 角色列表数据模型
+      roleList: [],
+      //! 下拉菜单中的已选中的菜单项对应的id值
+      selectRoleId: ''
     }
   },
   created () {
@@ -396,6 +435,44 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    //! 点击分配角色按钮，触发该事件
+    async setRoleForUser (currentUserInfo) {
+      this.currentUserInfo = currentUserInfo
+      // - 发送axios请求，获取角色列表
+      const { data: res } = await this.$http.get('roles')
+      if (res.meta.status !== 200) {
+        this.$message.error('获取角色列表数据失败')
+      } else {
+        this.roleList = res.data
+        console.log(this.roleList)
+      }
+
+      this.setRoledialogVisible = true
+    },
+    // - 点击分配角色的对话框的确定按钮，触发该事件，将选中的角色权限通过api接口保存到数据库中
+    async setRoleFun () {
+      const { data: res } = await this.$http.put(`users/${this.currentUserInfo.id}/role`, { rid: this.selectRoleId })
+      console.log(res)
+      if (res.meta.status === 400) {
+        //! 不允许修改admin用户的角色
+        this.$message.error(res.meta.msg)
+        this.setRoledialogVisible = false
+      } else if (res.meta.status !== 200) {
+        this.$message.error('更新用户角色失败')
+        this.setRoledialogVisible = false
+      } else {
+        this.$message.success('更新用户角色成功')
+        //! 更新用户列表数据
+        this.getUserList()
+        //! 关闭当前的对话框
+        this.setRoledialogVisible = false
+      }
+    },
+    //! 当用户分配角色的对话框关闭，会触发该事件
+    setroleDialogClosed () {
+      //* 将该数据置空的目的是，当对话框关闭时，将下拉菜单的展示区置空
+      this.selectRoleId = ''
     }
 
   }

@@ -25,7 +25,7 @@
          :collapse="isCollapse"
          :collapse-transition="false"
          :router="true"
-         default-active="/users"
+         :default-active="activePath"
          >
           <!-- 第一个一级菜单项 -->
           <el-submenu :index="item.id+''" v-for="item in menuList" :key="item.id">
@@ -83,6 +83,8 @@ export default {
   created () {
     this.getMenuList()
     this.activePath = window.sessionStorage.getItem('activePath')
+
+    // console.log(this.activePath)
   },
   methods: {
     //! 获取侧边栏的所有菜单项
@@ -97,11 +99,22 @@ export default {
     },
     // ? 点击退出按钮，执行该函数，清除token表示当前操作是退出登录，导航到登录页面重新登录
     loginOut () {
-      //! 清除token
-      window.sessionStorage.clear()
-      //! 编程式路由导航到login页面
-      this.$router.push('/login')
-      this.$message.success('退出成功')
+      this.$confirm('此操作将退出当前系统, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        //! 清除token
+        window.sessionStorage.clear()
+        //! 编程式路由导航到login页面
+        this.$router.push('/login')
+        this.$message.success('退出成功')
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消此操作'
+        })
+      })
     },
     // ? 点击折叠按钮响应该事件
     toggleCollapse () {
@@ -116,6 +129,8 @@ export default {
     // ? 点击二级菜单的链接，将触发该事件，将对应的path保存在sessionStorage中，
     // ? 当刷新网页的时候，还是可以直接进入到以前点击的页面
     saveNavStatu (path) {
+      // console.log(11)
+      // console.log(path)
       //! 将当前的hash地址赋值给activePath属性
       this.activePath = path
       //! 将path保存到sessionStorage中，当刷新浏览器的时候，对应的子菜单项依然高亮
