@@ -1,4 +1,4 @@
-# vue_shop
+# CIAS(电商管理系统)
 
 ## Project setup
 ```
